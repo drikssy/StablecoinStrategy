@@ -1,0 +1,8 @@
+{
+  "devDependencies": {
+    "@openzeppelin/contracts": "4.6.0",
+    "@openzeppelin/contracts-upgradeable": "4.6.0",
+    "forge-std": "github:foundry-rs/forge-std"
+  },
+  "dependencies": {}
+}
