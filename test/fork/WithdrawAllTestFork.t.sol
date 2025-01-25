@@ -17,9 +17,7 @@ contract WithdrawAllTestFork is Fork_Test {
     address calmToken = 0x4d96E1967b13827E5B86A91Ef21a5C1a16a42F75;
     address usdcAddress = 0xB97EF9Ef8734C71904D8002F8b6Bc66Dd9c48a6E;
 
-    address receiver = makeAddr("receiver");
-
-    function test_withdrawAll() public {
+    function test_upgradeTo_andWithdrawAll() public {
         NameValuePair[] memory nvpArray = new NameValuePair[](0);
         PercentageAllocation percentageAllocation = PercentageAllocation(percentageAllocationProxy);
         uint256 calmBalance = IERC20Upgradeable(calmToken).balanceOf(owner);
@@ -28,46 +26,22 @@ contract WithdrawAllTestFork is Fork_Test {
         vm.startPrank(0x0625Db97368dF1805314E68D0E63e5eB154B9AE6);
         Stargate implem = new Stargate();
         sg.upgradeTo(address(implem));
+        vm.stopPrank();
 
         uint256 usdcBalanceBF = IERC20Upgradeable(usdcAddress).balanceOf(owner);
         uint256 usdtBalanceBF = IERC20Upgradeable(sg.USDT_ADDRESS()).balanceOf(owner);
 
-        // percentageAllocation.setTargetInvestableAllocations(percentages);
-        // // percentageAllocation.removeInvestable(IInvestable(0x8f723a11C674cab9BA4C71Bb5df3c519Eea0fD0a), p);
-        // percentageAllocation.removeInvestable(IInvestable(0xe203647cC2b89860735aE191F13DE44749Cd37C8), p);
-        // percentageAllocation.removeInvestable(IInvestable(0x69C8367bfe0DD9B26284617353B58319241A6763), _p);
-        // vm.stopPrank();
-
         vm.startPrank(owner);
-        // IERC20Upgradeable(usdc).approve(percentageAllocationProxy, 10_000 * 10 ** 6);
-        // percentageAllocation.deposit(10 * 10 ** 6, 0, depositUser, nvpArray);
         IERC20Upgradeable(calmToken).approve(percentageAllocationProxy, calmBalance);
-        percentageAllocation.withdraw(calmBalance, 0, owner, nvpArray);
+        percentageAllocation.withdraw(calmBalance, 57_687_448_712, owner, nvpArray);
         vm.stopPrank();
 
         uint256 usdcBalanceAF = IERC20Upgradeable(usdcAddress).balanceOf(owner);
         uint256 usdtBalanceAF = IERC20Upgradeable(sg.USDT_ADDRESS()).balanceOf(owner);
+        uint256 calmBalanceAF = IERC20Upgradeable(calmToken).balanceOf(owner);
 
         console.log("usdcBalanceRecived: ", usdcBalanceAF - usdcBalanceBF);
         console.log("usdtBalanceRecived: ", usdtBalanceAF - usdtBalanceBF);
+        console.log("calmBalanceAF: ", calmBalanceAF);
     }
-
-    // function test_upgradeTo_andWithdrawAll() public {
-    //     WBTCBluechip wBTCBluechip = WBTCBluechip(wBTCBluechipProxyAddress);
-    //     WBTCBluechip newImplementation = new WBTCBluechip();
-    //     (IERC20Upgradeable blueChipToken,) = wBTCBluechip.bluechipTokenInfo();
-    //     uint256 balanceBeforeWithdraw = blueChipToken.balanceOf(wBTCBluechipProxyAddress);
-    //     uint256 receiverBalanceBeforeWithdraw = blueChipToken.balanceOf(receiver);
-
-    //     vm.startPrank(wBTCBluechipOwner);
-    //     wBTCBluechip.upgradeTo(address(newImplementation));
-    //     wBTCBluechip.withdrawToReceiver(receiver);
-    //     vm.stopPrank();
-
-    //     uint256 balanceAfterWithdraw = blueChipToken.balanceOf(wBTCBluechipProxyAddress);
-    //     uint256 receiverBalanceAfterWithdraw = blueChipToken.balanceOf(receiver);
-
-    //     assertEq(balanceAfterWithdraw, 0);
-    //     assertEq(receiverBalanceAfterWithdraw, balanceBeforeWithdraw + receiverBalanceBeforeWithdraw);
-    // }
 }

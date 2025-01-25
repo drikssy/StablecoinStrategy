@@ -6,6 +6,6 @@ import { Test } from "@forge-std/Test.sol";
 /// @notice Common logic needed by all fork tests.
 abstract contract Fork_Test is Test {
     function setUp() public virtual {
-        vm.createSelectFork({ blockNumber: 56_287_858, urlOrAlias: "avax" });
+        vm.createSelectFork({ blockNumber: 56_353_752, urlOrAlias: "avax" });
     }
 }
