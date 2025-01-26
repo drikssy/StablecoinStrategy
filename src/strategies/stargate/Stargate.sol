@@ -26,12 +26,12 @@ contract Stargate is UUPSUpgradeable, StrategyOwnablePausableBaseUpgradeable {
     // solhint-disable-next-line const-name-snakecase
     string public constant version = "1.1.2";
 
-    address public constant USDT_ADDRESS = 0x9702230A8Ea53601f5cD2dc00fDBc13d4dF4A8c7;
-
     struct StargateArgs {
         address traderjoeLBRouter;
         uint256 binStep;
     }
+
+    address public constant USDT_ADDRESS = 0x9702230A8Ea53601f5cD2dc00fDBc13d4dF4A8c7;
 
     /// @custom:oz-upgrades-unsafe-allow constructor
     constructor() {
